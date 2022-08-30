@@ -30,8 +30,10 @@ function addBookToLibrary (book) {
     myLibrary.push(book);
 }
 
-
-
+/**
+ * Display books on web page
+ * @param {array} library - array with all books stored 
+ */
 function displayLibrary (library) {
     const section = document.querySelector('#library');
 
@@ -40,16 +42,22 @@ function displayLibrary (library) {
         const card = document.createElement('div');
         section.appendChild(card);
 
+        // Book's title
         const title = document.createElement('h2');
         title.textContent = book.title;
         card.appendChild(title);
+        
+        // Book's author
         const author = document.createElement('p');
         author.textContent = book.author;
         card.appendChild(author);
+
+        // Book's number of pages
         const pages = document.createElement('span');
         pages.textContent = `N. of pages: ${book.pages}`;
         card.appendChild(pages);
 
+        // Already read or not
         const read = document.createElement('span');
         read.textContent = book.alreadyRead ? 'Book already read' : 'Not read yet';
         card.appendChild(read);  
