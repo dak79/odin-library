@@ -30,13 +30,16 @@ function addBookToLibrary (book) {
     myLibrary.push(book);
 }
 
+
+
 function displayLibrary (library) {
     const section = document.querySelector('#library');
 
     library.forEach(book => {
-
+        // Card container
         const card = document.createElement('div');
         section.appendChild(card);
+
         const title = document.createElement('h2');
         title.textContent = book.title;
         card.appendChild(title);
