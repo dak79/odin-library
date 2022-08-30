@@ -1,4 +1,4 @@
-let myLibrary = [];
+const myLibrary = [];
 
 /**
  * Constructor for objects Book
