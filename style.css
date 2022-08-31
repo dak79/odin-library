@@ -11,20 +11,45 @@ body {
 }
 
 /* Layout */
-
 body {
     width: 100vw;
     height: 100vh;
     display: grid;
     grid: 
         [row1-start] "header" 1fr [row1-end]
-        [row2-start] "library" 7fr [row2-end]
+        [row2-start] "library" 5fr [row2-end]
     ;
 }
 
 header {
     grid-area: header;
+    display: grid;
+    grid: 
+    "logo button" 
+    / 2fr 1fr;
+    align-items: center;
 }
+
+div.header-logo {
+    grid-area: logo;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+div.header-logo svg {
+    margin-right: 2rem;
+}
+
+div.header-btn {
+    grid-area: button;
+    justify-self: center;
+}
+
+div.header-btn button {
+    padding: 1.5rem;
+}
+
 
 section.library-wrapper {
     grid-area: library;
@@ -53,12 +78,37 @@ div.card {
     font-size: 0.9rem;
 }
 
+/* Style */
+
+header {
+    background-color: #164e63;
+}
+
+div.header-logo svg {
+    color: #fbbf24;
+}
+
+div.header-logo h1 {
+    font-size: 4rem;
+    font-family: 'Roboto Slab', serif;
+    color: #fbbf24;
+}
+
+div.header-btn button {
+    padding: 1.5rem;
+    font-size: 1.5rem;
+    border-radius: 50%;
+}
+
+div.header-btn button .header-btn-plus {
+    font-size: 3rem;
+}
+
+
 
 /* Test layout */
 
-header {
-    background-color: aquamarine;
-}
+
 
 section.library-wrapper {
     background-color: bisque;
