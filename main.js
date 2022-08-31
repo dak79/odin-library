@@ -40,6 +40,7 @@ function displayLibrary (library) {
     library.forEach(book => {
         // Card container
         const card = document.createElement('div');
+        card.classList.add('card');
         section.appendChild(card);
 
         // Book's title
