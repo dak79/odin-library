@@ -38,30 +38,39 @@ function displayLibrary (library) {
     const section = document.querySelector('#library');
 
     library.forEach(book => {
+
         // Card container
         const card = document.createElement('div');
         card.classList.add('card');
         section.appendChild(card);
 
+        const header = document.createElement('div');
+        header.classList.add('card-header');
+        card.appendChild(header);
+
         // Book's title
         const title = document.createElement('h2');
         title.textContent = book.title;
-        card.appendChild(title);
+        header.appendChild(title);
         
         // Book's author
         const author = document.createElement('p');
         author.textContent = book.author;
-        card.appendChild(author);
+        header.appendChild(author);
+
+        const footer = document.createElement('div');
+        footer.classList.add('card-footer');
+        card.appendChild(footer)
 
         // Book's number of pages
         const pages = document.createElement('span');
-        pages.textContent = `N. of pages: ${book.pages}`;
-        card.appendChild(pages);
+        pages.textContent = `Pages: ${book.pages}`;
+        footer.appendChild(pages);
 
         // Already read or not
         const read = document.createElement('span');
         read.textContent = book.alreadyRead ? 'Book already read' : 'Not read yet';
-        card.appendChild(read);  
+        footer.appendChild(read);  
     });
 }
 
