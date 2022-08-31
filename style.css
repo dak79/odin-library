@@ -5,6 +5,14 @@
     box-sizing: border-box;
 }
 
+/* CSS variable */
+:root {
+    --dark-blue: #155e75;
+    --darkest-blue: #164e63;
+    --amber: #fbbf24;
+    --amber-darker: #f59e0b;
+}
+
 /* Font */
 body {
     font-family: 'Roboto', sans-serif;
@@ -81,23 +89,41 @@ div.card {
 /* Style */
 
 header {
-    background-color: #164e63;
+    background-color: var(--dark-blue);
 }
 
-div.header-logo svg {
-    color: #fbbf24;
+div.header-logo svg,
+div.header-logo h1  {
+    color: var(--amber);
 }
 
 div.header-logo h1 {
     font-size: 4rem;
-    font-family: 'Roboto Slab', serif;
-    color: #fbbf24;
 }
+div.header-logo h1,
+div.header-btn button {
+    font-family: 'Roboto Slab', serif;
+}
+
 
 div.header-btn button {
     padding: 1.5rem;
     font-size: 1.5rem;
     border-radius: 50%;
+    background-color: var(--amber);
+    color: var(--dark-blue);
+    border: 1px solid var(--amber);
+    box-shadow: 5px 5px  rgba(0, 0, 0, 0.2);
+}
+
+div.header-btn button:active {
+    transform: translateY(4px);
+    box-shadow: 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+div.header-btn button:hover {
+    background-color: var(--amber-darker);
+    color: var(--darkest-blue);
 }
 
 div.header-btn button .header-btn-plus {
