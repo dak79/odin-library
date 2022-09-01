@@ -68,6 +68,7 @@ section.library-wrapper {
 }
 
 div.card,
+div.card form,
 .card-footer {
     display: flex;
     flex-direction: column;
@@ -80,6 +81,10 @@ div.card {
     height: max(300px, 6rem);
     margin-top: 2rem;
     padding: 1rem;
+}
+
+div.card form {
+    align-items: flex-start;
 }
 
 .card-footer {
@@ -111,6 +116,7 @@ div.header-btn button {
     padding: 1.5rem;
     font-size: 1.5rem;
     border-radius: 50%;
+    margin: 1rem;
     background-color: var(--amber);
     color: var(--dark-blue);
     border: 1px solid var(--amber);
@@ -127,6 +133,11 @@ div.header-btn button:hover {
     color: var(--darkest-blue);
 }
 
+div.header-btn button:disabled {
+    transform: none;
+    box-shadow: 2px 2px  5px rgba(0, 0, 0, 0.2);
+
+}
 
 
 /* Test layout */

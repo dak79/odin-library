@@ -75,6 +75,137 @@ function displayLibrary (library) {
     });
 }
 
+// Listenern to new book button
+const addBookBtn = document.querySelector('#add-book');
+
+addBookBtn.addEventListener('click', addNewBook);
+
+function addNewBook () {
+    const section = document.querySelector('#library');
+
+    addBookBtn.setAttribute('disabled', true);
+    
+
+    const card = document.createElement('div');
+    card.classList.add('card');
+    section.appendChild(card);
+
+    const form = document.createElement('form');
+    card.appendChild(form);
+
+    
+
+    // Book's title
+    const titleLabel = document.createElement('label');
+    titleLabel.setAttribute('for', 'title');
+    titleLabel.textContent = 'Title:';
+    form.appendChild(titleLabel);
+    
+    const title = document.createElement('input');
+
+    const titleAttrs = {
+        type: 'text',
+        id: 'title',
+        name: 'title'
+    }
+
+    setAttributes(title, titleAttrs)
+    form.appendChild(title);
+
+
+    // Book's author
+    const authorLabel = document.createElement('label');
+    authorLabel.setAttribute('for', 'author');
+    authorLabel.textContent = 'Author:';
+    form.appendChild(authorLabel);
+
+    const author = document.createElement('input');
+
+    const authorAttrs = {
+        type: 'text',
+        id: 'author',
+        name: 'author'
+    }
+
+    setAttributes(author, authorAttrs);
+    form.appendChild(author);
+
+   
+
+    // Book's number of pages
+    const pagesLabel = document.createElement('label');
+    
+    pagesLabel.setAttribute('for', 'pages');
+    pagesLabel.textContent = 'Pages:';
+    form.appendChild(pagesLabel);
+
+    const pages = document.createElement('input');
+
+    const pagesAttrs = {
+        type: 'number',
+        id: 'pages',
+        name: 'pages'
+    }
+
+    setAttributes(pages, pagesAttrs);
+    form.appendChild(pages);
+
+    // Already read or not
+    const readLabel = document.createElement('label');
+    
+    readLabel.setAttribute('for', 'pages');
+    readLabel.textContent = 'Read:';
+    form.appendChild(readLabel);
+
+    const read = document.createElement('input');
+
+    const readAttrs = {
+        type: 'checkbox',
+        id: 'read',
+        name: 'read',
+        checked: true
+    }
+
+    setAttributes(read, readAttrs);
+    form.appendChild(read);
+
+
+   // Button
+   const btnSave = document.createElement('button');
+   btnSave.setAttribute('type', 'button');
+   btnSave.textContent = 'Save';
+   form.appendChild(btnSave);
+
+   btnSave.addEventListener('click', () => {
+    addBookBtn.removeAttribute('disabled');
+    const titleField = document.querySelector('#title').value;
+    const authorField = document.querySelector('#author').value;
+    const pagesField = document.querySelector('#pages').value;
+    const readField = document.querySelector('#read').value;
+    const newBook = new Book(titleField, authorField, pagesField, readField);
+    addBookToLibrary(newBook);
+    cleanDisplay();
+    displayLibrary(myLibrary);
+   
+   });
+
+
+
+
+}
+
+function cleanDisplay() {
+    const section = document.querySelector('#library');
+    section.innerHTML = '';
+}
+
+// Helper for assign multiple attribute to an element
+const setAttributes = (element, attrs) =>{
+    for (let key in attrs) {
+        element.setAttribute(key, attrs[key]);
+    }
+}
+
 
 /* TEST */
 // Create instances and add those to array
