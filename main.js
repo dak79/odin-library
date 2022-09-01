@@ -77,23 +77,25 @@ function displayLibrary (library) {
 
 // Listenern to new book button
 const addBookBtn = document.querySelector('#add-book');
-
 addBookBtn.addEventListener('click', addNewBook);
 
+/**
+ * Add new book to library
+ */
 function addNewBook () {
     const section = document.querySelector('#library');
 
+    // Disable add new book button
     addBookBtn.setAttribute('disabled', true);
     
-
+    // Create a card and add to libary
     const card = document.createElement('div');
     card.classList.add('card');
     section.appendChild(card);
 
+    // Create form tag
     const form = document.createElement('form');
     card.appendChild(form);
-
-    
 
     // Book's title
     const titleLabel = document.createElement('label');
@@ -102,16 +104,13 @@ function addNewBook () {
     form.appendChild(titleLabel);
     
     const title = document.createElement('input');
-
     const titleAttrs = {
         type: 'text',
         id: 'title',
         name: 'title'
     }
-
     setAttributes(title, titleAttrs)
     form.appendChild(title);
-
 
     // Book's author
     const authorLabel = document.createElement('label');
@@ -120,92 +119,88 @@ function addNewBook () {
     form.appendChild(authorLabel);
 
     const author = document.createElement('input');
-
     const authorAttrs = {
         type: 'text',
         id: 'author',
         name: 'author'
     }
-
     setAttributes(author, authorAttrs);
     form.appendChild(author);
 
-   
-
     // Book's number of pages
-    const pagesLabel = document.createElement('label');
-    
+    const pagesLabel = document.createElement('label');    
     pagesLabel.setAttribute('for', 'pages');
     pagesLabel.textContent = 'Pages:';
     form.appendChild(pagesLabel);
 
     const pages = document.createElement('input');
-
     const pagesAttrs = {
         type: 'number',
         id: 'pages',
         name: 'pages'
     }
-
     setAttributes(pages, pagesAttrs);
     form.appendChild(pages);
 
     // Already read or not
     const readLabel = document.createElement('label');
-    
     readLabel.setAttribute('for', 'pages');
     readLabel.textContent = 'Read:';
     form.appendChild(readLabel);
 
     const read = document.createElement('input');
-
     const readAttrs = {
         type: 'checkbox',
         id: 'read',
         name: 'read',
         checked: true
     }
-
     setAttributes(read, readAttrs);
     form.appendChild(read);
 
-
-   // Button
+   // Save button
    const btnSave = document.createElement('button');
    btnSave.setAttribute('type', 'button');
    btnSave.textContent = 'Save';
    form.appendChild(btnSave);
 
    btnSave.addEventListener('click', () => {
+
+    // Enable add new button again
     addBookBtn.removeAttribute('disabled');
+    
+    // Create a new book instances
     const titleField = document.querySelector('#title').value;
     const authorField = document.querySelector('#author').value;
     const pagesField = document.querySelector('#pages').value;
     const readField = document.querySelector('#read').value;
     const newBook = new Book(titleField, authorField, pagesField, readField);
+    
+    // Add new book insances to array
     addBookToLibrary(newBook);
+
+    // Clean library
     cleanDisplay();
+
+    // Display updated library
     displayLibrary(myLibrary);
-   
    });
-
-
-
-
 }
 
+/**
+ * Clear the library display
+ */
 function cleanDisplay() {
     const section = document.querySelector('#library');
     section.innerHTML = '';
 }
 
 // Helper for assign multiple attribute to an element
-const setAttributes = (element, attrs) =>{
+function setAttributes(element, attrs) {
     for (let key in attrs) {
         element.setAttribute(key, attrs[key]);
     }
 }
-
 
 /* TEST */
 // Create instances and add those to array
