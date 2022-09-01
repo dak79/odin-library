@@ -1,3 +1,4 @@
+// Book database
 const myLibrary = [];
 
 /**

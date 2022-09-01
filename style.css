@@ -67,9 +67,13 @@ section.library-wrapper {
     align-content: flex-start;   
 }
 
-div.card {
+div.card,
+.card-footer {
     display: flex;
     flex-direction: column;
+}
+
+div.card {
     justify-content: space-between;
     align-items: flex-start;
     width: max(250px, 5rem);
@@ -79,10 +83,9 @@ div.card {
 }
 
 .card-footer {
-    display: flex;
-    flex-direction: column;
     font-size: 0.9rem;
 }
+
 
 /* Style */
 header {
@@ -94,8 +97,9 @@ div.header-logo h1  {
     color: var(--amber);
 }
 
-div.header-logo h1 {
-    font-size: 4rem;
+div.header-logo h1,
+div.header-btn button .header-btn-plus {
+    font-size: 3rem;
 }
 
 div.header-logo h1,
@@ -110,12 +114,12 @@ div.header-btn button {
     background-color: var(--amber);
     color: var(--dark-blue);
     border: 1px solid var(--amber);
-    box-shadow: 5px 5px  rgba(0, 0, 0, 0.2);
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
 }
 
 div.header-btn button:active {
     transform: translateY(4px);
-    box-shadow: 2px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 2px 2px  5px rgba(0, 0, 0, 0.2);
 }
 
 div.header-btn button:hover {
@@ -123,9 +127,6 @@ div.header-btn button:hover {
     color: var(--darkest-blue);
 }
 
-div.header-btn button .header-btn-plus {
-    font-size: 3rem;
-}
 
 
 /* Test layout */
