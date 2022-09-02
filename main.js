@@ -162,7 +162,7 @@ function addNewBook () {
     authorLabel.setAttribute('for', 'author');
     authorLabel.textContent = 'Author:';
     form.appendChild(authorLabel);
-
+    
     const author = document.createElement('input');
     const authorAttrs = {
         type: 'text',
@@ -171,13 +171,13 @@ function addNewBook () {
     }
     setAttributes(author, authorAttrs);
     form.appendChild(author);
-
+    
     // Book's number of pages
     const pagesLabel = document.createElement('label');    
     pagesLabel.setAttribute('for', 'pages');
     pagesLabel.textContent = 'Pages:';
     form.appendChild(pagesLabel);
-
+    
     const pages = document.createElement('input');
     const pagesAttrs = {
         type: 'number',
@@ -186,50 +186,54 @@ function addNewBook () {
     }
     setAttributes(pages, pagesAttrs);
     form.appendChild(pages);
-
+    
     // Already read or not
     const readLabel = document.createElement('label');
     readLabel.setAttribute('for', 'pages');
-    readLabel.textContent = 'Read:';
+    readLabel.textContent = 'Not Read Yet:'
     form.appendChild(readLabel);
-
+    
     const read = document.createElement('input');
     const readAttrs = {
         type: 'checkbox',
         id: 'read',
         name: 'read',
-        checked: true
     }
     setAttributes(read, readAttrs);
     form.appendChild(read);
-
-   // Save button
-   const btnSave = document.createElement('button');
-   btnSave.setAttribute('type', 'button');
-   btnSave.textContent = 'Save';
-   form.appendChild(btnSave);
-
-   btnSave.addEventListener('click', () => {
-
-    // Enable add new button again
-    addBookBtn.removeAttribute('disabled');
     
-    // Create a new book instances
-    const titleField = document.querySelector('#title').value;
-    const authorField = document.querySelector('#author').value;
-    const pagesField = document.querySelector('#pages').value;
-    const readField = document.querySelector('#read').value;
-    const newBook = new Book(titleField, authorField, pagesField, readField);
+    // Change the label according to checkbox value  
+    read.addEventListener('change', (event) => {
+        event.target.checked ? readLabel.textContent = 'Read:' : readLabel.textContent = 'Not Read Yet:';
+    })
+
+    // Save button
+    const btnSave = document.createElement('button');
+    btnSave.setAttribute('type', 'button');
+    btnSave.textContent = 'Save';
+    form.appendChild(btnSave);
     
-    // Add new book insances to array
-    addBookToLibrary(newBook);
+    btnSave.addEventListener('click', () => {
+        
+        // Enable add new button again
+        addBookBtn.removeAttribute('disabled');
+        
+        // Create a new book instances
+        const titleField = document.querySelector('#title').value;
+        const authorField = document.querySelector('#author').value;
+        const pagesField = document.querySelector('#pages').value;
+        const readField = document.querySelector('#read').checked;
+        const newBook = new Book(titleField, authorField, pagesField, readField);
+        
+        // Add new book insances to array
+        addBookToLibrary(newBook);
 
-    // Clean library
-    cleanDisplay();
+        // Clean library
+        cleanDisplay();
 
-    // Display updated library
-    displayLibrary(myLibrary);
-   });
+        // Display updated library
+        displayLibrary(myLibrary);
+    });
 }
 
 /**
