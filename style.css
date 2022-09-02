@@ -7,10 +7,17 @@
 
 /* CSS variable */
 :root {
-    --dark-blue: #155e75;
-    --darkest-blue: #164e63;
+    --white: #ffffff;
+    --amber-light: #fef3c7;
     --amber: #fbbf24;
-    --amber-darker: #f59e0b;
+    --amber-dark: #f59e0b;
+    --blue: #155e75;
+    --blue-dark: #164e63;
+    --normal-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+    --smaller-shadow: 2px 2px  5px rgba(0, 0, 0, 0.2);
+    --radius-small: 15px;
+    --radius-circle: 50%;
+    --bold: 700;
 }
 
 /* Font */
@@ -54,8 +61,10 @@ div.header-btn {
     justify-self: center;
 }
 
+
 div.header-btn button {
     padding: 1.5rem;
+    margin: 1rem;
 }
 
 section.library-wrapper {
@@ -91,10 +100,14 @@ div.card form {
     font-size: 0.9rem;
 }
 
+div.card button {
+    padding: 0.3rem;
+    margin: 0.5rem;
+}
 
 /* Style */
 header {
-    background-color: var(--dark-blue);
+    background-color: var(--blue);
 }
 
 div.header-logo svg,
@@ -113,38 +126,119 @@ div.header-btn button {
 }
 
 div.header-btn button {
-    padding: 1.5rem;
     font-size: 1.5rem;
-    border-radius: 50%;
-    margin: 1rem;
+    border-radius: var(--radius-circle);
     background-color: var(--amber);
-    color: var(--dark-blue);
+    color: var(--blue);
     border: 1px solid var(--amber);
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--normal-shadow);
 }
 
 div.header-btn button:active {
     transform: translateY(4px);
-    box-shadow: 2px 2px  5px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--smaller-shadow);
 }
 
 div.header-btn button:hover {
-    background-color: var(--amber-darker);
-    color: var(--darkest-blue);
+    background-color: var(--amber-dark);
+    color: var(--blue-dark);
 }
 
 div.header-btn button:disabled {
     transform: none;
-    box-shadow: 2px 2px  5px rgba(0, 0, 0, 0.2);
-
+    box-shadow: var(--smaller-shadow);
 }
 
-
-/* Test layout */
 section.library-wrapper {
-    background-color: bisque;
+    background-color: var(--white);
 }
 
 div.card {
-    border: 2px solid red;
+    background-color: var(--amber);
+    border: 2px solid var(--blue);
+    box-shadow: var(--normal-shadow);
+    border-radius: var(--radius-small);
+    color: var(--blue-dark);
+    font-weight: var(--bold);
+}
+
+div.card button {
+    background-color: var(--blue);
+    color: var(--amber);
+    border-radius: var(--radius-small);
+    border: 1px solid var(--blue);
+    font-weight: var(--bold);
+    box-shadow: var(--normal-shadow);
+    min-width: 6rem;
+}
+
+div.card button:active {
+    transform: translateY(2px);
+    box-shadow: var(--smaller-shadow);
+}
+
+div.card button:hover {
+    background-color: var(--blue-dark);
+    color: var(--amber-dark);
+}
+
+div.card-footer,
+form {
+    position: relative;
+}
+
+
+div.card-footer input[type="checkbox"], 
+form input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 3rem;
+    height: 1.5rem;
+    border-radius: var(--radius-small);
+    border: 2px solid var(--blue-dark);
+    background: #ef4444;
+    transition: all 0.4s;
+}
+
+div.card-footer input[type="checkbox"]:checked, 
+form input[type="checkbox"]:checked {
+    background-color: var(--amber);
+    transition: all 0.4s;
+}
+
+div.card-footer input[type="checkbox"]:checked::before {
+    top: 35%;
+    left: 23%;
+}
+
+form input[type="checkbox"]:checked::before {
+    left: 15%;
+    top: 67%;
+}
+
+div.card-footer input[type="checkbox"]:checked::before,
+form input[type="checkbox"]:checked::before {
+    transition: all 0.4s;
+}
+
+
+div.card-footer input[type="checkbox"]::before,
+form input[type="checkbox"]::before {
+    width: 1.3rem;
+    height: 1.3rem;
+    border-radius: var(--radius-circle);
+    background-color: var(--blue-dark);
+    content: '';
+    position: absolute;
+    transition: all 0.4s;
+}
+
+div.card-footer input[type="checkbox"]::before {
+    top: 35%;
+    left: 0%;
+}
+
+form input[type="checkbox"]::before {
+    top: 67%;
+    left: 0%;
 }
