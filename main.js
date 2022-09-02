@@ -286,5 +286,4 @@ const gondolin = new Book ('The Fall of Gondolin', 'J.R.R. Tolkien', 304,
 false);
 addBookToLibrary(gondolin);
 
-
 displayLibrary(myLibrary);
