@@ -13,6 +13,8 @@
     --amber-dark: #f59e0b;
     --blue: #155e75;
     --blue-dark: #164e63;
+    --red: #ef4444; 
+   
     --normal-shadow: 5px 5px 5px rgba(0, 0, 0, 0.2);
     --smaller-shadow: 2px 2px  5px rgba(0, 0, 0, 0.2);
     --radius-small: 15px;
@@ -20,22 +22,20 @@
     --bold: 700;
 }
 
-/* Font */
-body {
-    font-family: 'Roboto', sans-serif;
-}
-
-/* Layout */
+/* Body */
 body {
     width: 100vw;
     height: 100vh;
     display: grid;
     grid: 
-        [row1-start] "header" 1fr [row1-end]
-        [row2-start] "library" 5fr [row2-end]
+    [row1-start] "header" 1fr [row1-end]
+    [row2-start] "library" 5fr [row2-end]
     ;
+
+    font-family: 'Roboto', sans-serif;
 }
 
+/* Header */
 header {
     grid-area: header;
     display: grid;
@@ -43,6 +43,8 @@ header {
         "logo button" 
     / 2fr 1fr;
     align-items: center;
+
+    background-color: var(--blue);
 }
 
 div.header-logo {
@@ -52,62 +54,13 @@ div.header-logo {
     align-items: center;
 }
 
-div.header-logo svg {
-    margin-right: 2rem;
-}
-
 div.header-btn {
     grid-area: button;
     justify-self: center;
 }
 
-
-div.header-btn button {
-    padding: 1.5rem;
-    margin: 1rem;
-}
-
-section.library-wrapper {
-    grid-area: library;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 15px;
-    justify-items: center;
-    align-content: flex-start;   
-}
-
-div.card,
-div.card form,
-.card-footer {
-    display: flex;
-    flex-direction: column;
-}
-
-div.card {
-    justify-content: space-between;
-    align-items: flex-start;
-    width: max(250px, 5rem);
-    height: max(300px, 6rem);
-    margin-top: 2rem;
-    padding: 1rem;
-}
-
-div.card form {
-    align-items: flex-start;
-}
-
-.card-footer {
-    font-size: 0.9rem;
-}
-
-div.card button {
-    padding: 0.3rem;
-    margin: 0.5rem;
-}
-
-/* Style */
-header {
-    background-color: var(--blue);
+div.header-logo svg {
+    margin-right: 2rem;
 }
 
 div.header-logo svg,
@@ -126,6 +79,9 @@ div.header-btn button {
 }
 
 div.header-btn button {
+    padding: 1.5rem;
+    margin: 1rem;
+
     font-size: 1.5rem;
     border-radius: var(--radius-circle);
     background-color: var(--amber);
@@ -149,11 +105,34 @@ div.header-btn button:disabled {
     box-shadow: var(--smaller-shadow);
 }
 
+/* Section library */
 section.library-wrapper {
+    grid-area: library;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    justify-items: center;
+    
+    align-content: flex-start;
     background-color: var(--white);
 }
 
+/* Cards (books) and add book form*/
+div.card,
+div.card form,
+.card-footer {
+    display: flex;
+    flex-direction: column;
+}
+
 div.card {
+    justify-content: space-between;
+    align-items: flex-start;
+    width: max(250px, 5rem);
+    height: max(300px, 6rem);
+    margin-top: 2rem;
+    padding: 1rem;
+
     background-color: var(--amber);
     border: 2px solid var(--blue);
     box-shadow: var(--normal-shadow);
@@ -162,7 +141,18 @@ div.card {
     font-weight: var(--bold);
 }
 
+div.card form {
+    align-items: flex-start;
+}
+
+.card-footer {
+    font-size: 0.9rem;
+}
+
 div.card button {
+    padding: 0.3rem;
+    margin: 0.5rem;
+
     background-color: var(--blue);
     color: var(--amber);
     border-radius: var(--radius-small);
@@ -182,18 +172,20 @@ div.card button:hover {
     color: var(--amber-dark);
 }
 
+/* Toggle button in card and form */
 div.card-footer,
 form {
     position: relative;
 }
 
+/* Standard checkbox reset and toggle background*/
 div.card-footer input[type="checkbox"], 
 form input[type="checkbox"] {
     -webkit-appearance: none;
     appearance: none;
     width: 3rem;
     height: 1.5rem;
-    background: #ef4444;
+    background: var(--red);
     transition: all 0.4s;
 }
 
@@ -203,6 +195,7 @@ form input[type="checkbox"]:checked {
     transition: all 0.4s;
 }
 
+/* Read position*/
 div.card-footer input[type="checkbox"]:checked::before {
     top: 35%;
     left: 23%;
@@ -213,12 +206,23 @@ form input[type="checkbox"]:checked::before {
     top: 74%;
 }
 
+/* Not read position */
+div.card-footer input[type="checkbox"]::before {
+    top: 35%;
+    left: 0%;
+}
+
+form input[type="checkbox"]::before {
+    top: 74%;
+    left: 0%;
+}
+
 div.card-footer input[type="checkbox"]:checked::before,
 form input[type="checkbox"]:checked::before {
     transition: all 0.4s;
 }
 
-
+/* Toggle ball style*/
 div.card-footer input[type="checkbox"]::before,
 form input[type="checkbox"]::before {
     width: 1.3rem;
@@ -230,16 +234,7 @@ form input[type="checkbox"]::before {
     transition: all 0.4s;
 }
 
-div.card-footer input[type="checkbox"]::before {
-    top: 35%;
-    left: 0%;
-}
-
-form input[type="checkbox"]::before {
-    top: 74%;
-    left: 0%;
-}
-
+/* Add book form*/
 input {
     border-radius: var(--radius-small);
     border: 2px solid var(--blue);

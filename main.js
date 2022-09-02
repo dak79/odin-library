@@ -266,7 +266,6 @@ function setAttributes(element, attrs) {
     }
 }
 
-/* TEST */
 // Create instances and add those to array
 const hobbit = new Book('The Hobbit', 'J.R.R. Tolkien', 305, true);
 addBookToLibrary(hobbit);
@@ -287,13 +286,5 @@ const gondolin = new Book ('The Fall of Gondolin', 'J.R.R. Tolkien', 304,
 false);
 addBookToLibrary(gondolin);
 
-console.log(myLibrary)
+
 displayLibrary(myLibrary);
-
-/*
-console.log(b);
-console.log(b.info());
-
-addBookToLibrary(b);
-console.log(myLibrary);
-*/
