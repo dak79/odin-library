@@ -23,6 +23,9 @@ Book.prototype.info = function () {
     return `${this.title} by ${this.author}, ${this.pages}, ${this.alreadyRead ? 'Book already read' : 'Not read yet'}.`;
 }
 
+Book.prototype.toggleRead = function () {
+    this.alreadyRead ? this.alreadyRead = false : this.alreadyRead = true;
+}
 /**
  * Add a book to library array
  * @param {object} book - store books in myLibrary array 
@@ -74,18 +77,46 @@ function displayLibrary (library) {
         pages.textContent = `Pages: ${book.pages}`;
         footer.appendChild(pages);
 
-        // Already read or not
-        const read = document.createElement('span');
-        read.textContent = book.alreadyRead ? 'Book already read' : 'Not read yet';
-        footer.appendChild(read);  
-        
+        // Already read or not: initial value
+        const readLabel = document.createElement('label');
+        readLabel.setAttribute('for', 'readBtn')
+        readLabel.textContent = book.alreadyRead ? 'Book already read' : 'Not read yet';
+        footer.appendChild(readLabel);  
+
+        // Slide button
+        const readBtn = document.createElement('input');
+        const readBtnAttrs = {
+        type: 'checkbox',
+        id: 'readBtn',
+        name: 'readBtn',
+        }
+
+        setAttributes(readBtn, readBtnAttrs)
+
+        // Initial value slide
+        if (book.alreadyRead) {
+            readBtn.setAttribute('checked', '');
+        }
+
+        footer.appendChild(readBtn);
+
+        // Change status read / not read
+        const readBtnBind = book.toggleRead.bind(book)
+        readBtn.addEventListener('change', () => {
+            
+            // Change value in the book object
+            readBtnBind();
+
+            // Change label
+            readLabel.textContent = book.alreadyRead ? 'Book already read' : 'Not read yet';
+        });
+
+        // Button delete
         const btnDelete = document.createElement('button');
         btnDelete.setAttribute('type', 'button');
         btnDelete.textContent = 'Delete';
-        footer.appendChild(btnDelete);
-
         btnDelete.addEventListener('click', deleteBook);
-        
+        footer.appendChild(btnDelete);
     });
 }
 
