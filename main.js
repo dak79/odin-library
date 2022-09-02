@@ -29,6 +29,7 @@ Book.prototype.info = function () {
  */
 function addBookToLibrary (book) {
     myLibrary.push(book);
+
 }
 
 /**
@@ -42,6 +43,11 @@ function displayLibrary (library) {
 
         // Card container
         const card = document.createElement('div');
+        
+        // Set data-attribute = array index for each book 
+        const index = library.indexOf(book)
+        card.setAttribute('data-index', `${index}`);
+        
         card.classList.add('card');
         section.appendChild(card);
 
@@ -72,6 +78,14 @@ function displayLibrary (library) {
         const read = document.createElement('span');
         read.textContent = book.alreadyRead ? 'Book already read' : 'Not read yet';
         footer.appendChild(read);  
+        
+        const btnDelete = document.createElement('button');
+        btnDelete.setAttribute('type', 'button');
+        btnDelete.textContent = 'Delete';
+        footer.appendChild(btnDelete);
+
+        btnDelete.addEventListener('click', deleteBook);
+        
     });
 }
 
@@ -193,6 +207,21 @@ function addNewBook () {
 function cleanDisplay() {
     const section = document.querySelector('#library');
     section.innerHTML = '';
+}
+
+function deleteBook(event) {
+
+    // Get the book index
+    const index = event.target.parentElement.parentElement.dataset.index;
+    
+    // Cancel book
+    myLibrary.splice(index, 1);
+
+    // Clean library
+    cleanDisplay();
+
+    // Display updated library
+    displayLibrary(myLibrary);
 }
 
 // Helper for assign multiple attribute to an element
