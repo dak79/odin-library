@@ -1,31 +1,24 @@
 // Book database
 const myLibrary = [];
 
-/**
- * Constructor for objects Book
- * @param {string} title - Book's title
- * @param {string} author - Book's author
- * @param {number} pages - Book's pages 
- * @param {boolean} alreadyRead - Aready read / Not read yet
- */
-function Book (title, author, pages, alreadyRead) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.alreadyRead = alreadyRead;
+class Book {
+    constructor(title, author, pages, isAlreadyRead) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.isAlreadyRead = isAlreadyRead;
+    }
+
+    get info() {
+        return `${this.title} by ${this.author}, ${this.pages}, ${this.isAlreadyRead ? 'Book already read' : 'Not read yet'}`;
+    }
+
+    toggleRead() {
+        this.isAlreadyRead ? this.isAlreadyRead = false : this.isAlreadyRead = true;
+    }
 }
 
-/**
- * Method store in Book's prototype
- * @returns {string} - Information about book
- */
-Book.prototype.info = function () {
-    return `${this.title} by ${this.author}, ${this.pages}, ${this.alreadyRead ? 'Book already read' : 'Not read yet'}.`;
-}
 
-Book.prototype.toggleRead = function () {
-    this.alreadyRead ? this.alreadyRead = false : this.alreadyRead = true;
-}
 /**
  * Add a book to library array
  * @param {object} book - store books in myLibrary array 
@@ -80,7 +73,7 @@ function displayLibrary (library) {
         // Already read or not: initial value
         const readLabel = document.createElement('label');
         readLabel.setAttribute('for', 'readBtn')
-        readLabel.textContent = book.alreadyRead ? 'Book already read' : 'Not read yet';
+        readLabel.textContent = book.isAlreadyRead? 'Book already read' : 'Not read yet';
         footer.appendChild(readLabel);  
 
         // Slide button
@@ -94,7 +87,7 @@ function displayLibrary (library) {
         setAttributes(readBtn, readBtnAttrs)
 
         // Initial value slide
-        if (book.alreadyRead) {
+        if (book.isAlreadyRead) {
             readBtn.setAttribute('checked', '');
         }
 
@@ -108,7 +101,7 @@ function displayLibrary (library) {
             readBtnBind();
 
             // Change label
-            readLabel.textContent = book.alreadyRead ? 'Book already read' : 'Not read yet';
+            readLabel.textContent = book.isAlreadyRead ? 'Book already read' : 'Not read yet';
         });
 
         // Button delete
