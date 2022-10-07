@@ -25,14 +25,15 @@ const libraryApp = (() => {
         constructor(myLibrary) {
             this.myLibrary = myLibrary;
         }
-    
+        
         addBook(book) {
             this.myLibrary.push(book)
         }
-
+        
         addNewBook() {
             const section = document.querySelector('#library');
-            
+            const addBookBtn = document.querySelector('#add-book');
+
             // Disable add book btn
             addBookBtn.setAttribute('disabled', true);
             
@@ -86,48 +87,32 @@ const libraryApp = (() => {
                 event.target.checked ? readLabel.textContent = 'Read:' : readLabel.textContent = 'Not Read Yet:';
             })
             
-            const btnSave = document.createElement('button', 'Save');
+            const btnSave = helper.createPlusTextContent('button', 'Save');
             btnSave.setAttribute('type', 'button');
-            
-            
+            btnSave.addEventListener('click', this.saveNewBook.bind(this));
             
             // Append elements to DOM
             section.appendChild(card);
             card.appendChild(form);
             helper.appendChildren(form, [titleLabel, title, authorLabel, author, pagesLabel, pages, readLabel, read, btnSave]);
-            
+        }
 
+        saveNewBook() {
+            const addBookBtn = document.querySelector('#add-book');
             
-        
-        
-
-
-        
-        
-        
-        
-        btnSave.addEventListener('click', () => {
-            
-            // Enable add new button again
+            // Enable add book
             addBookBtn.removeAttribute('disabled');
-            
+        
             // Create a new book instances
             const titleField = document.querySelector('#title').value;
             const authorField = document.querySelector('#author').value;
             const pagesField = document.querySelector('#pages').value;
             const readField = document.querySelector('#read').checked;
             const newBook = new Book(titleField, authorField, pagesField, readField);
-            
-            // Add new book insances to array
-            addBookToLibrary(newBook);
-    
-            // Clean library
-            cleanDisplay();
-    
-            // Display updated library
-            displayLibrary(myLibrary);
-        });
-
+        
+            this.addBook(newBook);
+            this.clean();
+            this.render();
         }
     
         deleteBook(event) {
@@ -139,6 +124,8 @@ const libraryApp = (() => {
     
         render() {
             const section = document.querySelector('#library');
+            const addBookBtn = document.querySelector('#add-book');
+            addBookBtn.addEventListener('click', this.addNewBook.bind(this));
     
             this.myLibrary.forEach((book, bookIndex) => {
 
@@ -189,7 +176,6 @@ const libraryApp = (() => {
             const section = document.querySelector('#library');
             section.replaceChildren();
         }
-    
     }
 
     const helper = (() => {
@@ -224,9 +210,6 @@ const libraryApp = (() => {
     // Create library
     const library = new Library([]);
 
-    const addBookBtn = document.querySelector('#add-book');
-    addBookBtn.addEventListener('click', library.addNewBook);
-    
     // Create instances and add those to array
     const hobbit = new Book('The Hobbit', 'J.R.R. Tolkien', 305, true);
     library.addBook(hobbit);
