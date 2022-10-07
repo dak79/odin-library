@@ -32,87 +32,79 @@ const libraryApp = (() => {
 
         addNewBook() {
             const section = document.querySelector('#library');
+            
+            // Disable add book btn
             addBookBtn.setAttribute('disabled', true);
             
-            // Create a card
-            const card = document.create('div');
-            card.classList.add('card');
+            const card = helper.createPlusClass('div', 'card');
+            const form = helper.create('form');
+            
+            const titleLabel = helper.createPlusTextContent('label', 'Title:');
+            titleLabel.setAttribute('for', 'title');
+            
+            const title = document.createElement('input');
+            const titleAttrs = {
+                type: 'text',
+                id: 'title',
+                name: 'title'
+            }
+            helper.setAttributes(title, titleAttrs)
+            
+            const authorLabel = helper.createPlusTextContent('label', 'Author');
+            authorLabel.setAttribute('for', 'author');
+            
+            const author = helper.create('input');
+            const authorAttrs = {
+                type: 'text',
+                id: 'author',
+                name: 'author'
+            }
+            helper.setAttributes(author, authorAttrs);
+            
+            const pagesLabel = helper.createPlusTextContent('label', 'Pages:');    
+            pagesLabel.setAttribute('for', 'pages');
+            
+            const pages = helper.create('input');
+            const pagesAttrs = {
+                type: 'number',
+                id: 'pages',
+                name: 'pages'
+            }
+            helper.setAttributes(pages, pagesAttrs);
+
+            const readLabel = helper.createPlusTextContent('label', 'Not read Yet:');
+            readLabel.setAttribute('for', 'pages');
+
+            const read = helper.create('input');
+            const readAttrs = {
+                type: 'checkbox',
+                id: 'read',
+                name: 'read',
+            }
+            helper.setAttributes(read, readAttrs);
+            read.addEventListener('change', (event) => {
+                event.target.checked ? readLabel.textContent = 'Read:' : readLabel.textContent = 'Not Read Yet:';
+            })
+            
+            const btnSave = document.createElement('button', 'Save');
+            btnSave.setAttribute('type', 'button');
+            
+            
+            
+            // Append elements to DOM
             section.appendChild(card);
-    
-        // Create form tag
-        const form = document.createElement('form');
-        card.appendChild(form);
-    
-        // Book's title
-        const titleLabel = document.createElement('label');
-        titleLabel.setAttribute('for', 'title');
-        titleLabel.textContent = 'Title:';
-        form.appendChild(titleLabel);
+            card.appendChild(form);
+            helper.appendChildren(form, [titleLabel, title, authorLabel, author, pagesLabel, pages, readLabel, read, btnSave]);
+            
+
+            
         
-        const title = document.createElement('input');
-        const titleAttrs = {
-            type: 'text',
-            id: 'title',
-            name: 'title'
-        }
-        setAttributes(title, titleAttrs)
-        form.appendChild(title);
-    
-        // Book's author
-        const authorLabel = document.createElement('label');
-        authorLabel.setAttribute('for', 'author');
-        authorLabel.textContent = 'Author:';
-        form.appendChild(authorLabel);
         
-        const author = document.createElement('input');
-        const authorAttrs = {
-            type: 'text',
-            id: 'author',
-            name: 'author'
-        }
-        setAttributes(author, authorAttrs);
-        form.appendChild(author);
+
+
         
-        // Book's number of pages
-        const pagesLabel = document.createElement('label');    
-        pagesLabel.setAttribute('for', 'pages');
-        pagesLabel.textContent = 'Pages:';
-        form.appendChild(pagesLabel);
         
-        const pages = document.createElement('input');
-        const pagesAttrs = {
-            type: 'number',
-            id: 'pages',
-            name: 'pages'
-        }
-        setAttributes(pages, pagesAttrs);
-        form.appendChild(pages);
         
-        // Already read or not
-        const readLabel = document.createElement('label');
-        readLabel.setAttribute('for', 'pages');
-        readLabel.textContent = 'Not Read Yet:'
-        form.appendChild(readLabel);
-        
-        const read = document.createElement('input');
-        const readAttrs = {
-            type: 'checkbox',
-            id: 'read',
-            name: 'read',
-        }
-        setAttributes(read, readAttrs);
-        form.appendChild(read);
-        
-        // Change the label according to checkbox value  
-        read.addEventListener('change', (event) => {
-            event.target.checked ? readLabel.textContent = 'Read:' : readLabel.textContent = 'Not Read Yet:';
-        })
-    
-        // Save button
-        const btnSave = document.createElement('button');
-        btnSave.setAttribute('type', 'button');
-        btnSave.textContent = 'Save';
-        form.appendChild(btnSave);
         
         btnSave.addEventListener('click', () => {
             
@@ -164,7 +156,6 @@ const libraryApp = (() => {
                 const pages = helper.createPlusTextContent('span', `Pages: ${book.pages}`);
                 const readLabel = helper.createPlusTextContent('label', book.isRead);
                 readLabel.setAttribute('for', `readBtn-${bookIndex}`)
-                
                 const readBtn = helper.create('input');
                 const readBtnAttrs = {
                     type: 'checkbox',
