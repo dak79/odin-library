@@ -1,5 +1,5 @@
 // Book database
-const myLibrary = [];
+// const myLibrary = [];
 
 class Book {
     constructor(title, author, pages, isAlreadyRead) {
@@ -9,8 +9,12 @@ class Book {
         this.isAlreadyRead = isAlreadyRead;
     }
 
+    get isRead() {
+        return this.isAlreadyRead ? 'Book already read' : 'Not read yet';
+    }
+
     get info() {
-        return `${this.title} by ${this.author}, ${this.pages}, ${this.isAlreadyRead ? 'Book already read' : 'Not read yet'}`;
+        return `${this.title} by ${this.author}, ${this.pages}, ${this.isRead()}`;
     }
 
     toggleRead() {
@@ -18,108 +22,117 @@ class Book {
     }
 }
 
+class Library {
+    constructor(myLibrary) {
+        this.myLibrary = myLibrary;
+    }
 
-/**
- * Add a book to library array
- * @param {object} book - store books in myLibrary array 
- */
-function addBookToLibrary (book) {
-    myLibrary.push(book);
+    addBook(book) {
+        this.myLibrary.push(book)
+    }
 
-}
+    deleteBook(event) {
 
-/**
- * Display books on web page
- * @param {array} library - array with all books stored 
- */
-function displayLibrary (library) {
-    const section = document.querySelector('#library');
-
-    library.forEach(book => {
-
-        // Card container
-        const card = document.createElement('div');
+        // Get the book index
+        const index = event.target.parentElement.parentElement.dataset.index;
+        console.log(index);
+        console.log(this.myLibrary);
         
-        // Set data-attribute = array index for each book 
-        const index = library.indexOf(book)
-        card.setAttribute('data-index', `${index}`);
-        
-        card.classList.add('card');
-        section.appendChild(card);
+        this.myLibrary.splice(index, 1);
 
-        const header = document.createElement('div');
-        header.classList.add('card-header');
-        card.appendChild(header);
+        // Clean library
+        this.clean();
 
-        // Book's title
-        const title = document.createElement('h2');
-        title.textContent = book.title;
-        header.appendChild(title);
-        
-        // Book's author
-        const author = document.createElement('p');
-        author.textContent = book.author;
-        header.appendChild(author);
+        this.render();
 
-        const footer = document.createElement('div');
-        footer.classList.add('card-footer');
-        card.appendChild(footer)
+    }
 
-        // Book's number of pages
-        const pages = document.createElement('span');
-        pages.textContent = `Pages: ${book.pages}`;
-        footer.appendChild(pages);
+    render() {
+        const section = document.querySelector('#library');
 
-        // Already read or not: initial value
-        const readLabel = document.createElement('label');
-        readLabel.setAttribute('for', 'readBtn')
-        readLabel.textContent = book.isAlreadyRead? 'Book already read' : 'Not read yet';
-        footer.appendChild(readLabel);  
+        this.myLibrary.forEach((book, bookIndex) => {
 
-        // Slide button
-        const readBtn = document.createElement('input');
-        const readBtnAttrs = {
-        type: 'checkbox',
-        id: 'readBtn',
-        name: 'readBtn',
-        }
+            // Card Container
+            const card = create('div');
+            card.setAttribute('data-index', `${bookIndex}`)
+            card.classList.add('card');
+            section.appendChild(card);
 
-        setAttributes(readBtn, readBtnAttrs)
-
-        // Initial value slide
-        if (book.isAlreadyRead) {
-            readBtn.setAttribute('checked', '');
-        }
-
-        footer.appendChild(readBtn);
-
-        // Change status read / not read
-        const readBtnBind = book.toggleRead.bind(book)
-        readBtn.addEventListener('change', () => {
+            // Card Header
+            const header = create('div');
+            const title = create('h2');
+            const author = create('p');
             
-            // Change value in the book object
-            readBtnBind();
+            header.classList.add('card-header');
+            title.textContent = book.title;
+            author.textContent = book.author;
+            
+            // Card Footer
+            const footer = create('div');
+            const pages = create('span');
+            const readLabel = create('label');
+            const readBtn = create('input');
+            const readBtnAttrs = {
+                type: 'checkbox',
+                id: `readBtn-${bookIndex}`,
+                name: `readBtn-${bookIndex}`,
+            }
+            const btnDelete = create('button');
+            
+            footer.classList.add('card-footer');
+            pages.textContent = `Pages: ${book.pages}`;
+            readLabel.setAttribute('for', `readBtn-${bookIndex}`)
+            readLabel.textContent = book.isRead;
+            
+            setAttributes(readBtn, readBtnAttrs)
+            
+            if (book.isAlreadyRead) {
+                readBtn.setAttribute('checked', '');
+            }
+            
+            readBtn.addEventListener('change', () => {
+                book.toggleRead();
+                readLabel.textContent = book.isRead;
+            });
+            
+            btnDelete.setAttribute('type', 'button');
+            btnDelete.textContent = 'Delete';
+            btnDelete.addEventListener('click', this.deleteBook.bind(this));
 
-            // Change label
-            readLabel.textContent = book.isAlreadyRead ? 'Book already read' : 'Not read yet';
+            // Append to DOM
+            appendChildren(card, [header, footer]);
+            appendChildren(header, [title, author]);
+            appendChildren(footer, [pages, readLabel, readBtn, btnDelete])
         });
+    }
 
-        // Button delete
-        const btnDelete = document.createElement('button');
-        btnDelete.setAttribute('type', 'button');
-        btnDelete.textContent = 'Delete';
-        btnDelete.addEventListener('click', deleteBook);
-        footer.appendChild(btnDelete);
-    });
+    clean() {
+        const section = document.querySelector('#library');
+        section.replaceChildren();
+    }
+
 }
 
-// Listenern to new book button
-const addBookBtn = document.querySelector('#add-book');
-addBookBtn.addEventListener('click', addNewBook);
+// Helper create element
+const create = element => document.createElement(element);
+
+// Helper for assign multiple attribute to an element
+const setAttributes = (element, attrs) => Object.entries(attrs).forEach(([key, value]) => element.setAttribute(key, value));
+
+// Helper append multiple child
+
+const appendChildren = (parent, children) => children.forEach(child => parent.appendChild(child));
+
+
+// // Listenern to new book button
+// const addBookBtn = document.querySelector('#add-book');
+// addBookBtn.addEventListener('click', addNewBook);
 
 /**
  * Add new book to library
  */
+
+/*
 function addNewBook () {
     const section = document.querySelector('#library');
 
@@ -229,54 +242,32 @@ function addNewBook () {
     });
 }
 
-/**
- * Clear the library display
- */
-function cleanDisplay() {
-    const section = document.querySelector('#library');
-    section.innerHTML = '';
-}
+*/
 
-function deleteBook(event) {
+// Create library
+const library = new Library([]);
 
-    // Get the book index
-    const index = event.target.parentElement.parentElement.dataset.index;
-    
-    // Cancel book
-    myLibrary.splice(index, 1);
 
-    // Clean library
-    cleanDisplay();
-
-    // Display updated library
-    displayLibrary(myLibrary);
-}
-
-// Helper for assign multiple attribute to an element
-function setAttributes(element, attrs) {
-    for (let key in attrs) {
-        element.setAttribute(key, attrs[key]);
-    }
-}
 
 // Create instances and add those to array
 const hobbit = new Book('The Hobbit', 'J.R.R. Tolkien', 305, true);
-addBookToLibrary(hobbit);
+library.addBook(hobbit);
 
 const silmarillon = new Book ('The Silmarillion', 'J.R.R. Tolkien', 405, true);
-addBookToLibrary(silmarillon);
+library.addBook(silmarillon);
 
 const lord = new Book ('The Lord of the Rings', 'J.R.R. Tolkien', 1137, true);
-addBookToLibrary(lord);
+library.addBook(lord);
 
 const fall = new Book ('The Fall of Nùmenor', 'J.R.R. Tolkien', 352, false);
-addBookToLibrary(fall);
+library.addBook(fall);
 
 const unfinished = new Book ('Unfinished Tales', 'J.R.R. Tolkien', 624, true);
-addBookToLibrary(unfinished);
+library.addBook(unfinished);
 
 const gondolin = new Book ('The Fall of Gondolin', 'J.R.R. Tolkien', 304,
 false);
-addBookToLibrary(gondolin);
+library.addBook(gondolin);
 
-displayLibrary(myLibrary);
+library.render();
+
