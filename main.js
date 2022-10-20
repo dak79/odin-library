@@ -33,9 +33,12 @@ const libraryApp = (() => {
         addNewBook() {
             const section = document.querySelector('#library');
             const addBookBtn = document.querySelector('#add-book');
-
+            
             // Disable add book btn
             addBookBtn.setAttribute('disabled', true);
+
+            const btnDeletes = document.querySelectorAll('.btn-delete');
+            btnDeletes.forEach(btn => btn.setAttribute('disabled', true));
             
             const card = helper.createPlusClass('div', 'card');
             const form = helper.create('form');
@@ -102,6 +105,10 @@ const libraryApp = (() => {
             
             // Enable add book
             addBookBtn.removeAttribute('disabled');
+
+            // Enable delete buttons
+            const btnDeletes = document.querySelectorAll('.btn-delete');
+            btnDeletes.forEach(btn => btn.setAttribute('disabled', false));
         
             // Create a new book instances
             const titleField = document.querySelector('#title').value;
@@ -124,9 +131,7 @@ const libraryApp = (() => {
     
         render() {
             const section = document.querySelector('#library');
-            const addBookBtn = document.querySelector('#add-book');
-            addBookBtn.addEventListener('click', this.addNewBook.bind(this));
-    
+            
             this.myLibrary.forEach((book, bookIndex) => {
 
                 // Card Container
@@ -161,7 +166,10 @@ const libraryApp = (() => {
                 });
 
                 const btnDelete = helper.createPlusTextContent('button', 'Delete');
-                btnDelete.setAttribute('type', 'button');
+                helper.setAttributes(btnDelete, {
+                    type: 'button',
+                    class: 'btn-delete'
+                });
                 btnDelete.addEventListener('click', this.deleteBook.bind(this));
     
                 // Append to DOM
@@ -209,6 +217,10 @@ const libraryApp = (() => {
 
     // Create library
     const library = new Library([]);
+    
+    // Event listener for Add Book Btn
+    const addBookBtn = document.querySelector('#add-book');
+    addBookBtn.addEventListener('click', library.addNewBook.bind(library));
 
     // Create instances and add those to array
     const hobbit = new Book('The Hobbit', 'J.R.R. Tolkien', 305, true);
@@ -231,5 +243,4 @@ const libraryApp = (() => {
     library.addBook(gondolin);
     
     library.render();
-
 })();    
