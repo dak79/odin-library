@@ -30,7 +30,26 @@ const libraryApp = (() => {
             this.myLibrary.push(book)
         }
         
-        addNewBook() {
+        saveNewBook() {
+            
+            // Create a new book instances
+            const titleField = document.querySelector('#title').value;
+            const authorField = document.querySelector('#author').value;
+            const pagesField = document.querySelector('#pages').value;
+            const readField = document.querySelector('#read').checked;
+            const newBook = new Book(titleField, authorField, pagesField, readField);
+        
+            this.addBook(newBook);
+        }
+    
+        deleteBook(index) {
+            this.myLibrary.splice(index, 1);
+        }
+    }
+
+    const DOMmanipulation = (() => {
+        const renderNewBook = () => {
+
             const section = document.querySelector('#library');
             const addBookBtn = document.querySelector('#add-book');
             
@@ -92,7 +111,7 @@ const libraryApp = (() => {
             
             const btnSave = helper.createPlusTextContent('button', 'Save');
             btnSave.setAttribute('type', 'button');
-            btnSave.addEventListener('click', this.saveNewBook.bind(this));
+            btnSave.addEventListener('click', renderSavedBook);
             
             // Append elements to DOM
             section.appendChild(card);
@@ -100,7 +119,7 @@ const libraryApp = (() => {
             helper.appendChildren(form, [titleLabel, title, authorLabel, author, pagesLabel, pages, readLabel, read, btnSave]);
         }
 
-        saveNewBook() {
+        const renderSavedBook = () => {
             const addBookBtn = document.querySelector('#add-book');
             
             // Enable add book
@@ -117,74 +136,83 @@ const libraryApp = (() => {
             const readField = document.querySelector('#read').checked;
             const newBook = new Book(titleField, authorField, pagesField, readField);
         
-            this.addBook(newBook);
-            this.clean();
-            this.render();
+            userLibrary.library.addBook(newBook);
+            cleanDisplay();
+            renderLibrary(userLibrary.library);
         }
-    
-        deleteBook(event) {
-            const index = event.target.parentElement.parentElement.dataset.index;
-            this.myLibrary.splice(index, 1);
-            this.clean();
-            this.render();
-        }
-    
-        render() {
+
+        const renderLibrary = (myLibrary) => {
             const section = document.querySelector('#library');
             
-            this.myLibrary.forEach((book, bookIndex) => {
+            for (let item of Object.values(myLibrary)) {
+                item.forEach((book, index) => {
 
-                // Card Container
-                const card = helper.createPlusClass('div', 'card');
-                card.setAttribute('data-index', `${bookIndex}`);
+                    // Card Container
+                    const card = helper.createPlusClass('div', 'card');
+                    card.setAttribute('data-index', `${index}`);
+   
+                    // Card Header
+                    const header = helper.createPlusClass('div', 'card-header');
+                    const title = helper.createPlusTextContent('h2', book.title);
+                    const author = helper.createPlusTextContent('p', book.author);
+   
+                    // Card Footer
+                    const footer = helper.createPlusClass('div', 'card-footer');
+                    const pages = helper.createPlusTextContent('span', `Pages: ${book.pages}`);
+                    const readLabel = helper.createPlusTextContent('label', book.isRead);
+                    readLabel.setAttribute('for', `readBtn-${index}`)
+                    const readBtn = helper.create('input');
+                    const readBtnAttrs = {
+                        type: 'checkbox',
+                        id: `readBtn-${index}`,
+                        name: `readBtn-${index}`,
+                    }
+                    helper.setAttributes(readBtn, readBtnAttrs)
+                           
+                    if (book.isAlreadyRead) {
+                        readBtn.setAttribute('checked', '');
+                    }
+                    
+                    readBtn.addEventListener('change', () => {
+                        book.toggleRead();
+                        readLabel.textContent = book.isRead;
+                    });
     
-                // Card Header
-                const header = helper.createPlusClass('div', 'card-header');
-                const title = helper.createPlusTextContent('h2', book.title);
-                const author = helper.createPlusTextContent('p', book.author);
+                    const btnDelete = helper.createPlusTextContent('button', 'Delete');
+                    helper.setAttributes(btnDelete, {
+                        type: 'button',
+                        class: 'btn-delete',
+                        'data-btn':`${index}`
+                    });
+                    btnDelete.addEventListener('click', deleteBookBtn);
+   
+                    // Append to DOM
+                    section.appendChild(card);
+                    helper.appendChildren(card, [header, footer]);
+                    helper.appendChildren(header, [title, author]);
+                    helper.appendChildren(footer, [pages, readLabel, readBtn, btnDelete])
+                })
+            }
+        }
+
+        function deleteBookBtn(event){
+            userLibrary.library.deleteBook(event.target.dataset.btn);
+            cleanDisplay();
+            renderLibrary(userLibrary.library);
             
-                // Card Footer
-                const footer = helper.createPlusClass('div', 'card-footer');
-                const pages = helper.createPlusTextContent('span', `Pages: ${book.pages}`);
-                const readLabel = helper.createPlusTextContent('label', book.isRead);
-                readLabel.setAttribute('for', `readBtn-${bookIndex}`)
-                const readBtn = helper.create('input');
-                const readBtnAttrs = {
-                    type: 'checkbox',
-                    id: `readBtn-${bookIndex}`,
-                    name: `readBtn-${bookIndex}`,
-                }
-                helper.setAttributes(readBtn, readBtnAttrs)
-                
-                if (book.isAlreadyRead) {
-                    readBtn.setAttribute('checked', '');
-                }
-                
-                readBtn.addEventListener('change', () => {
-                    book.toggleRead();
-                    readLabel.textContent = book.isRead;
-                });
+            
+        }
 
-                const btnDelete = helper.createPlusTextContent('button', 'Delete');
-                helper.setAttributes(btnDelete, {
-                    type: 'button',
-                    class: 'btn-delete'
-                });
-                btnDelete.addEventListener('click', this.deleteBook.bind(this));
-    
-                // Append to DOM
-                section.appendChild(card);
-                helper.appendChildren(card, [header, footer]);
-                helper.appendChildren(header, [title, author]);
-                helper.appendChildren(footer, [pages, readLabel, readBtn, btnDelete])
-            });
+        const cleanDisplay = () => {
+                const section = document.querySelector('#library');
+                section.replaceChildren();
         }
-    
-        clean() {
-            const section = document.querySelector('#library');
-            section.replaceChildren();
-        }
-    }
+
+        return {
+            renderNewBook,
+            renderLibrary
+        }    
+    })();
 
     const helper = (() => {
     
@@ -215,32 +243,41 @@ const libraryApp = (() => {
         }
     })();
 
-    // Create library
-    const library = new Library([]);
-    
-    // Event listener for Add Book Btn
-    const addBookBtn = document.querySelector('#add-book');
-    addBookBtn.addEventListener('click', library.addNewBook.bind(library));
+    const userLibrary = (() => {
 
-    // Create instances and add those to array
-    const hobbit = new Book('The Hobbit', 'J.R.R. Tolkien', 305, true);
-    library.addBook(hobbit);
-    
-    const silmarillon = new Book ('The Silmarillion', 'J.R.R. Tolkien', 405, true);
-    library.addBook(silmarillon);
-    
-    const lord = new Book ('The Lord of the Rings', 'J.R.R. Tolkien', 1137, true);
-    library.addBook(lord);
-    
-    const fall = new Book ('The Fall of Nùmenor', 'J.R.R. Tolkien', 352, false);
-    library.addBook(fall);
-    
-    const unfinished = new Book ('Unfinished Tales', 'J.R.R. Tolkien', 624, true);
-    library.addBook(unfinished);
-    
-    const gondolin = new Book ('The Fall of Gondolin', 'J.R.R. Tolkien', 304,
-    false);
-    library.addBook(gondolin);
-    
-    library.render();
+        // Event listener for Add Book Btn
+        const addBookBtn = document.querySelector('#add-book');
+        addBookBtn.addEventListener('click', DOMmanipulation.renderNewBook);
+        
+        // Create library
+        const library = new Library([]);
+        
+        // Create instances and add those to array
+        const hobbit = new Book('The Hobbit', 'J.R.R. Tolkien', 305, true);
+        library.addBook(hobbit);
+        
+        const silmarillon = new Book ('The Silmarillion', 'J.R.R. Tolkien', 405, true);
+        library.addBook(silmarillon);
+        
+        const lord = new Book ('The Lord of the Rings', 'J.R.R. Tolkien', 1137, true);
+        library.addBook(lord);
+        
+        const fall = new Book ('The Fall of Nùmenor', 'J.R.R. Tolkien', 352, false);
+        library.addBook(fall);
+        
+        const unfinished = new Book ('Unfinished Tales', 'J.R.R. Tolkien', 624, true);
+        library.addBook(unfinished);
+        
+        const gondolin = new Book ('The Fall of Gondolin', 'J.R.R. Tolkien', 304,
+        false);
+        library.addBook(gondolin);
+
+        DOMmanipulation.renderLibrary(library);
+
+        return {
+            library
+        }
+
+        
+    })();
 })();    
