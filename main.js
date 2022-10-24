@@ -204,8 +204,8 @@ const libraryApp = (() => {
         }
 
         const cleanDisplay = () => {
-                const section = document.querySelector('#library');
-                section.replaceChildren();
+            const section = document.querySelector('#library');
+            section.replaceChildren();
         }
 
         return {
@@ -277,7 +277,5 @@ const libraryApp = (() => {
         return {
             library
         }
-
-        
     })();
 })();    
