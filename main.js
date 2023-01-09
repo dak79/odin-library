@@ -67,8 +67,13 @@ const libraryApp = (() => {
 
             const card = helper.createPlusClass('div', 'card')
             const form = helper.create('form')
+            const formAttrs = {
+                action: '/',
+                method: 'GET'
+            }
+            helper.setAttributes(form, formAttrs)
 
-            const titleLabel = helper.createPlusTextContent('label', 'Title:')
+            const titleLabel = helper.createPlusTextContent('label', 'Title* :')
             titleLabel.setAttribute('for', 'title')
 
             const title = document.createElement('input')
@@ -76,10 +81,15 @@ const libraryApp = (() => {
                 type: 'text',
                 id: 'title',
                 name: 'title',
+                maxlength: 30,
+                required: true
             }
             helper.setAttributes(title, titleAttrs)
 
-            const authorLabel = helper.createPlusTextContent('label', 'Author')
+            const authorLabel = helper.createPlusTextContent(
+                'label',
+                'Author* :'
+            )
             authorLabel.setAttribute('for', 'author')
 
             const author = helper.create('input')
@@ -87,6 +97,8 @@ const libraryApp = (() => {
                 type: 'text',
                 id: 'author',
                 name: 'author',
+                required: true,
+                maxlength: 30
             }
             helper.setAttributes(author, authorAttrs)
 
@@ -98,6 +110,8 @@ const libraryApp = (() => {
                 type: 'number',
                 id: 'pages',
                 name: 'pages',
+                min: 1,
+                max: 5000
             }
             helper.setAttributes(pages, pagesAttrs)
 
@@ -111,8 +125,9 @@ const libraryApp = (() => {
             const readAttrs = {
                 type: 'checkbox',
                 id: 'read',
-                name: 'read',
+                name: 'read'
             }
+
             helper.setAttributes(read, readAttrs)
             read.addEventListener('change', (event) => {
                 event.target.checked
@@ -123,6 +138,10 @@ const libraryApp = (() => {
             const btnSave = helper.createPlusTextContent('button', 'Save')
             btnSave.setAttribute('type', 'button')
             btnSave.addEventListener('click', renderSavedBook)
+
+            const info = document.createElement('p')
+            info.textContent = '(*) required fields'
+            info.classList.add('info-message')
 
             // Append elements to DOM
             section.appendChild(card)
@@ -137,34 +156,38 @@ const libraryApp = (() => {
                 readLabel,
                 read,
                 btnSave,
+                info
             ])
         }
 
         const renderSavedBook = () => {
-            const addBookBtn = document.querySelector('#add-book')
+            const form = document.querySelector('form')
 
-            // Enable add book
-            addBookBtn.removeAttribute('disabled')
+            if (form.checkValidity()) {
+                const addBookBtn = document.querySelector('#add-book')
+                // Enable add book
+                addBookBtn.removeAttribute('disabled')
 
-            // Enable delete buttons
-            const btnDeletes = document.querySelectorAll('.btn-delete')
-            btnDeletes.forEach((btn) => btn.setAttribute('disabled', false))
+                // Enable delete buttons
+                const btnDeletes = document.querySelectorAll('.btn-delete')
+                btnDeletes.forEach((btn) => btn.setAttribute('disabled', false))
 
-            // Create a new book instances
-            const titleField = document.querySelector('#title').value
-            const authorField = document.querySelector('#author').value
-            const pagesField = document.querySelector('#pages').value
-            const readField = document.querySelector('#read').checked
-            const newBook = new Book(
-                titleField,
-                authorField,
-                pagesField,
-                readField
-            )
+                // Create a new book instances
+                const titleField = document.querySelector('#title').value
+                const authorField = document.querySelector('#author').value
+                const pagesField = document.querySelector('#pages').value
+                const readField = document.querySelector('#read').checked
+                const newBook = new Book(
+                    titleField,
+                    authorField,
+                    pagesField,
+                    readField
+                )
 
-            userLibrary.library.addBook(newBook)
-            cleanDisplay()
-            renderLibrary(userLibrary.library)
+                userLibrary.library.addBook(newBook)
+                cleanDisplay()
+                renderLibrary(userLibrary.library)
+            }
         }
 
         const renderLibrary = (myLibrary) => {
@@ -199,7 +222,7 @@ const libraryApp = (() => {
                     const readBtnAttrs = {
                         type: 'checkbox',
                         id: `readBtn-${index}`,
-                        name: `readBtn-${index}`,
+                        name: `readBtn-${index}`
                     }
                     helper.setAttributes(readBtn, readBtnAttrs)
 
@@ -219,7 +242,7 @@ const libraryApp = (() => {
                     helper.setAttributes(btnDelete, {
                         type: 'button',
                         class: 'btn-delete',
-                        'data-btn': `${index}`,
+                        'data-btn': `${index}`
                     })
                     btnDelete.addEventListener('click', deleteBookBtn)
 
@@ -231,7 +254,7 @@ const libraryApp = (() => {
                         pages,
                         readLabel,
                         readBtn,
-                        btnDelete,
+                        btnDelete
                     ])
                 })
             }
@@ -250,7 +273,7 @@ const libraryApp = (() => {
 
         return {
             renderNewBook,
-            renderLibrary,
+            renderLibrary
         }
     })()
 
@@ -282,7 +305,7 @@ const libraryApp = (() => {
             createPlusClass,
             createPlusTextContent,
             setAttributes,
-            appendChildren,
+            appendChildren
         }
     })()
 
@@ -341,7 +364,7 @@ const libraryApp = (() => {
         DOMmanipulation.renderLibrary(library)
 
         return {
-            library,
+            library
         }
     })()
 })()
